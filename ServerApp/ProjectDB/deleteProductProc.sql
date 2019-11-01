@@ -1,0 +1,21 @@
+USE GlobalHyper
+GO
+
+IF Exists(SELECT NAME FROM sys.procedures
+  WHERE NAME = 'deleteProduct')
+  DROP PROCEDURE deleteProduct
+GO
+
+CREATE PROC deleteProduct
+@proID INT
+AS
+BEGIN
+	BEGIN
+		BEGIN TRAN
+		DELETE FROM AVAILABLESTOCK 
+		WHERE proID = @proID
+		DELETE FROM PRODUCTS
+		WHERE proID = @proID
+		END COMMIT
+	END
+GO
